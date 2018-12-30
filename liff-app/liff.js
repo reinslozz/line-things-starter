@@ -250,7 +250,6 @@ function liffRequestDevice() {
       .requestDevice()
       .then(device => {
         console.log("requestDevice resolve");
-        if(skipConnect) return
         liffConnectToDevice(device);
       })
       .catch(error => {
@@ -267,6 +266,7 @@ function liffConnectToDevice(device) {
     device.gatt
       .connect()
       .then(() => {
+        if(skipConnect) return
         console.log("connected to device resolve");
         document.getElementById("device-name").innerText = device.name;
         document.getElementById("device-id").innerText = device.id;
