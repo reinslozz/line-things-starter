@@ -11,6 +11,11 @@ const PSDI_CHARACTERISTIC_UUID = "26E2B12B-85F0-4F3F-9FDD-91D114270E6E";
 let ledState = false; // true: LED on, false: LED off
 let clickCount = 0;
 
+// Debug Flag
+
+let skipliffCheckAvailablityAndDo = true;
+let skipConnect = true;
+
 // -------------- //
 // On window load //
 // -------------- //
@@ -34,6 +39,26 @@ function handlerToggleLed() {
 
     uiToggleLedButton(ledState);
     liffToggleDeviceLedState(ledState);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function handlerToggleConnect() {
+  try {
+    skipConnect = !skipConnect;
+    document.getElementById("btn-conn-toggle").innerText =
+      "skipConnect: " + skipConnect;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function handlerToggleAvailablty() {
+  try {
+    skipliffCheckAvailablityAndDo = !skipliffCheckAvailablityAndDo;
+    document.getElementById("btn-av-toggle").innerText =
+      "skipAvailablity: " + skipliffCheckAvailablityAndDo;
   } catch (error) {
     console.error(error);
   }
@@ -178,6 +203,7 @@ function initializeLiff() {
     liff
       .initPlugins(["bluetooth"])
       .then(() => {
+        if (skipliffCheckAvailablityAndDo) return;
         console.log("initPlugins");
         liffCheckAvailablityAndDo(() => liffRequestDevice());
       })
@@ -196,6 +222,8 @@ function liffCheckAvailablityAndDo(callbackIfAvailable) {
     liff.bluetooth
       .getAvailability()
       .then(isAvailable => {
+        if (skipConnect) return;
+
         console.log("getAvailability: ", isAvailable);
         if (isAvailable) {
           console.log("callbackIfAvailable");

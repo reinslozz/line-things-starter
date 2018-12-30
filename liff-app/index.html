@@ -19,7 +19,7 @@
 
   <body>
     <!-- Title -->
-    <h2>LINE Things Starter v0.0.4</h2>
+    <h2>LINE Things Starter v0.0.5</h2>
     <hr />
     <p>
       <img id="loading-animation" class="" src="loading.gif" height="14px" />
@@ -69,6 +69,32 @@
         >
           Switch LED ON
         </button>
+      </p>
+
+      <p>
+        <button
+          id="btn-initLiff"
+          class="btn btn-led-toggle"
+          onclick="initializeLiff()"
+        >
+          initializeLiff
+        </button>
+      </p>
+
+      <p>
+        <button
+          id="btn-av-toggle"
+          class="btn btn-led-toggle"
+          onclick="handlerToggleAvailablty()"
+        ></button>
+      </p>
+
+      <p>
+        <button
+          id="btn-conn-toggle"
+          class="btn btn-led-toggle"
+          onclick="handlerToggleConnect()"
+        ></button>
       </p>
       <hr />
     </div>
