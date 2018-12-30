@@ -45,6 +45,7 @@ class serverCallbacks: public BLEServerCallbacks {
 class writeCallback: public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *bleWriteCharacteristic) {
     std::string value = bleWriteCharacteristic->getValue();
+    Serial.println("Receive led command");
     if ((char)value[0] <= 1) {
       digitalWrite(LED1, (char)value[0]);
     }
@@ -80,6 +81,7 @@ void loop() {
     btnAction = 0;
     notifyCharacteristic->setValue(&btnValue, 1);
     notifyCharacteristic->notify();
+    Serial.println("Button pressed");
     delay(20);
   }
   // Disconnection
