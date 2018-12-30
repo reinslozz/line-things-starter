@@ -203,7 +203,6 @@ function initializeLiff() {
     liff
       .initPlugins(["bluetooth"])
       .then(() => {
-        if (skipliffCheckAvailablityAndDo) return;
         console.log("initPlugins");
         liffCheckAvailablityAndDo(() => liffRequestDevice());
       })
@@ -248,8 +247,8 @@ function liffRequestDevice() {
     console.log("liffRequestDevice");
     liff.bluetooth
       .requestDevice()
-      .then(device => {
-        console.log("requestDevice resolve");
+      .then((device, connected) => {
+        console.log("requestDevice resolve: ",connected);
         liffConnectToDevice(device);
       })
       .catch(error => {
@@ -265,8 +264,9 @@ function liffConnectToDevice(device) {
     console.log("liffConnectToDevice");
     device.gatt
       .connect()
-      .then(() => {
+      .then((res) => {
         console.log("connected to device resolve");
+        console.log(res)
         if (skipConnect) return;
         document.getElementById("device-name").innerText = device.name;
         document.getElementById("device-id").innerText = device.id;
