@@ -17,6 +17,7 @@ let clickCount = 0;
 
 window.onload = () => {
   try {
+    console.log("window onload");
     initializeApp();
   } catch (error) {
     console.error(error);
@@ -161,6 +162,7 @@ function makeErrorMsg(errorObj) {
 
 function initializeApp() {
   try {
+    console.log("initializeApp");
     liff.init(
       () => initializeLiff(),
       error => uiStatusError(makeErrorMsg(error), false)
@@ -172,9 +174,11 @@ function initializeApp() {
 
 function initializeLiff() {
   try {
+    console.log("initializeLiff");
     liff
       .initPlugins(["bluetooth"])
       .then(() => {
+        console.log("initPlugins");
         liffCheckAvailablityAndDo(() => liffRequestDevice());
       })
       .catch(error => {
@@ -187,11 +191,14 @@ function initializeLiff() {
 
 function liffCheckAvailablityAndDo(callbackIfAvailable) {
   try {
+    console.log("liffCheckAvailablityAndDo");
     // Check Bluetooth availability
     liff.bluetooth
       .getAvailability()
       .then(isAvailable => {
+        console.log("getAvailability: ", isAvailable);
         if (isAvailable) {
+          console.log("callbackIfAvailable");
           uiToggleDeviceConnected(false);
           callbackIfAvailable();
         } else {
@@ -212,10 +219,11 @@ function liffCheckAvailablityAndDo(callbackIfAvailable) {
 
 function liffRequestDevice() {
   try {
+    console.log("liffRequestDevice");
     liff.bluetooth
       .requestDevice()
       .then(device => {
-        // document.getElementById("debug-output").innerText = JSON.stringify(device);
+        console.log("requestDevice resolve");
         liffConnectToDevice(device);
       })
       .catch(error => {
@@ -228,9 +236,11 @@ function liffRequestDevice() {
 
 function liffConnectToDevice(device) {
   try {
+    console.log("liffConnectToDevice");
     device.gatt
       .connect()
       .then(() => {
+        console.log("connected to device resolve");
         document.getElementById("device-name").innerText = device.name;
         document.getElementById("device-id").innerText = device.id;
 
@@ -241,6 +251,7 @@ function liffConnectToDevice(device) {
         device.gatt
           .getPrimaryService(USER_SERVICE_UUID)
           .then(service => {
+            console.log("getPrimaryService resolve");
             liffGetUserService(service);
           })
           .catch(error => {
@@ -249,6 +260,7 @@ function liffConnectToDevice(device) {
         device.gatt
           .getPrimaryService(PSDI_SERVICE_UUID)
           .then(service => {
+            console.log("getPrimaryService PSDI resolve");
             liffGetPSDIService(service);
           })
           .catch(error => {
@@ -257,6 +269,7 @@ function liffConnectToDevice(device) {
 
         // Device disconnect callback
         const disconnectCallback = () => {
+          console.log("disconnectCallback");
           // Show status disconnected
           uiToggleDeviceConnected(false);
 
@@ -288,10 +301,12 @@ function liffConnectToDevice(device) {
 
 function liffGetUserService(service) {
   try {
+    console.log("liffGetUserService");
     // Button pressed state
     service
       .getCharacteristic(BTN_CHARACTERISTIC_UUID)
       .then(characteristic => {
+        console.log("btn char resolve");
         liffGetButtonStateCharacteristic(characteristic);
       })
       .catch(error => {
@@ -302,6 +317,7 @@ function liffGetUserService(service) {
     service
       .getCharacteristic(LED_CHARACTERISTIC_UUID)
       .then(characteristic => {
+        console.log("led char resolve");
         window.ledCharacteristic = characteristic;
 
         // Switch off by default
@@ -317,13 +333,16 @@ function liffGetUserService(service) {
 
 function liffGetPSDIService(service) {
   try {
+    console.log("liffGetPSDIService");
     // Get PSDI value
     service
       .getCharacteristic(PSDI_CHARACTERISTIC_UUID)
       .then(characteristic => {
+        console.log("PSDI char resolve");
         return characteristic.readValue();
       })
       .then(value => {
+        console.log("PSDI value resolve");
         // Byte array to hex string
         const psdi = new Uint8Array(value.buffer).reduce(
           (output, byte) => output + ("0" + byte.toString(16)).slice(-2),
@@ -343,9 +362,11 @@ function liffGetButtonStateCharacteristic(characteristic) {
   // Add notification hook for button state
   // (Get notified when button state changes)
   try {
+    console.log("liffGetButtonStateCharacteristic");
     characteristic
       .startNotifications()
       .then(() => {
+        console.log("btn char notify resolve");
         characteristic.addEventListener("characteristicvaluechanged", e => {
           const val = new Uint8Array(e.target.value.buffer)[0];
           if (val > 0) {
@@ -370,6 +391,7 @@ function liffToggleDeviceLedState(state) {
   try {
     // on: 0x01
     // off: 0x00
+    console.log("liffToggleDeviceLedState");
     window.ledCharacteristic
       .writeValue(state ? new Uint8Array([0x01]) : new Uint8Array([0x00]))
       .catch(error => {
