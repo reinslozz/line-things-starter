@@ -1,3 +1,8 @@
+var vConsole = new VConsole();
+window.onerror = function(message, url, line, column, error) {
+  console.log(message, url, line, column, error);
+};
+
 const USER_SERVICE_UUID = "9F5E638C-EDD8-4C26-9502-C0629F85EDE5"; // LED, Button
 // User service characteristics
 const LED_CHARACTERISTIC_UUID = "E9062E71-9E62-4BC6-B0D3-35CDCD9B027B";
