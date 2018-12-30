@@ -13,7 +13,7 @@ let clickCount = 0;
 
 // Debug Flag
 
-let skipliffCheckAvailablityAndDo = true;
+let skipliffCheckAvailablityAndDo = false;
 let skipConnect = true;
 
 // -------------- //
@@ -222,8 +222,6 @@ function liffCheckAvailablityAndDo(callbackIfAvailable) {
     liff.bluetooth
       .getAvailability()
       .then(isAvailable => {
-        if (skipConnect) return;
-
         console.log("getAvailability: ", isAvailable);
         if (isAvailable) {
           console.log("callbackIfAvailable");
@@ -252,6 +250,7 @@ function liffRequestDevice() {
       .requestDevice()
       .then(device => {
         console.log("requestDevice resolve");
+        if(skipConnect) return
         liffConnectToDevice(device);
       })
       .catch(error => {
