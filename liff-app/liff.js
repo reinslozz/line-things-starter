@@ -249,6 +249,7 @@ function liffRequestDevice() {
       .requestDevice()
       .then((device, connected) => {
         console.log("requestDevice resolve: ",connected);
+        console.log(device)
         liffConnectToDevice(device);
       })
       .catch(error => {
