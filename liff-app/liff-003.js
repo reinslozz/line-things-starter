@@ -172,6 +172,7 @@ function liffRequestDevice() {
     .requestDevice()
     .then(device => {
       lineDevice = device;
+      console.log(lineDevice);
       liffConnectToDevice(device);
     })
     .catch(error => {
@@ -314,6 +315,7 @@ function liffToggleDeviceLedState(state) {
 }
 
 function reConnect() {
+  console.log(lineDevice);
   lineDevice.disconnect();
-//   liffConnectToDevice(lineDevice);
+  //   liffConnectToDevice(lineDevice);
 }
