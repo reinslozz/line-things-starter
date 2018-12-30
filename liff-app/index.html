@@ -9,6 +9,10 @@
   </head>
 
   <body>
+      <script src="https://cdn.jsdelivr.net/npm/vconsole@3.2.0/dist/vconsole.min.js"></script>
+      <script>
+        var vConsole = new VConsole();
+      </script>
     <!-- Title -->
     <h2>LINE Things Starter</h2>
     <hr />
@@ -41,6 +45,10 @@
         <tr>
           <th class="device-info-cell device-info-key">Click count</th>
           <td class="device-info-cell device-info-val" id="click-count">0</td>
+        </tr>
+        <tr>
+          <th class="device-info-cell device-info-key">Debug Message</th>
+          <td class="device-info-cell device-info-val" id="debug-output"></td>
         </tr>
       </table>
       <hr />
