@@ -134,7 +134,7 @@ function uiToggleDeviceConnected(connected) {
       elStatus.classList.add("inactive");
       elStatus.innerText = "Device disconnected";
       // Hide controls
-      elControls.classList.add("hidden");
+    //   elControls.classList.add("hidden");
     }
   } catch (error) {
     console.error(error);
