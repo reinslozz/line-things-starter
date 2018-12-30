@@ -1,20 +1,25 @@
 <html>
-
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
     <script src=" https://d.line-scdn.net/liff/1.0/sdk.js"></script>
     <script src="liff.js"></script>
     <link rel="stylesheet" type="text/css" href="liff.css" />
   </head>
 
   <body>
-      <script src="https://cdn.jsdelivr.net/npm/vconsole@3.2.0/dist/vconsole.min.js"></script>
-      <script>
-        var vConsole = new VConsole();
-      </script>
+    <script src="https://cdn.jsdelivr.net/npm/vconsole@3.2.0/dist/vconsole.min.js"></script>
+    <script>
+      var vConsole = new VConsole();
+      window.onerror = function(message, url, line, column, error) {
+        console.log(message, url, line, column, error);
+      };
+    </script>
     <!-- Title -->
-    <h2>LINE Things Starter</h2>
+    <h2>LINE Things Starter v0.0.1</h2>
     <hr />
     <p>
       <img id="loading-animation" class="" src="loading.gif" height="14px" />
@@ -39,7 +44,9 @@
         <tr>
           <th class="device-info-cell device-info-key">Button state</th>
           <td class="device-info-cell device-info-val">
-            <button id="btn-state" class="btn btn-state" disabled>Released</button>
+            <button id="btn-state" class="btn btn-state" disabled>
+              Released
+            </button>
           </td>
         </tr>
         <tr>
@@ -51,13 +58,19 @@
           <td class="device-info-cell device-info-val" id="debug-output"></td>
         </tr>
       </table>
+
       <hr />
       <!-- Toggle LED -->
       <p>
-        <button id="btn-led-toggle" class="btn btn-led-toggle" onclick="handlerToggleLed()">Switch LED ON</button>
+        <button
+          id="btn-led-toggle"
+          class="btn btn-led-toggle"
+          onclick="handlerToggleLed()"
+        >
+          Switch LED ON
+        </button>
       </p>
       <hr />
     </div>
   </body>
-
 </html>
