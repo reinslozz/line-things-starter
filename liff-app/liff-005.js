@@ -171,9 +171,7 @@ function liffRequestDevice() {
   liff.bluetooth
     .requestDevice()
     .then(device => {
-      lineDevice = device;
-      window.gatt = device.gatt
-      console.log(lineDevice);
+      window.gatt = device.gatt;
       liffConnectToDevice(device);
     })
     .catch(error => {
@@ -184,10 +182,10 @@ function liffRequestDevice() {
 function liffConnectToDevice(device) {
   device.gatt
     .connect()
-    .then(() => {
+    .then(result => {
       document.getElementById("device-name").innerText = device.name;
       document.getElementById("device-id").innerText = device.id;
-
+      console.log("connect result:", result);
       // Show status connected
       uiToggleDeviceConnected(true);
 
@@ -316,7 +314,5 @@ function liffToggleDeviceLedState(state) {
 }
 
 function reConnect() {
-  console.log(lineDevice);
-  lineDevice.gatt.disconnect();
-  //   liffConnectToDevice(lineDevice);
+  window.gatt.disconnect();
 }
