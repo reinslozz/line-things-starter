@@ -247,9 +247,8 @@ function liffRequestDevice() {
     console.log("liffRequestDevice");
     liff.bluetooth
       .requestDevice()
-      .then((device, connected) => {
-        console.log("requestDevice resolve: ",connected);
-        console.log(device)
+      .then(device => {
+        console.log("requestDevice resolve: ", device);
         liffConnectToDevice(device);
       })
       .catch(error => {
@@ -265,10 +264,8 @@ function liffConnectToDevice(device) {
     console.log("liffConnectToDevice");
     device.gatt
       .connect()
-      .then((res) => {
-        console.log("connected to device resolve");
-        console.log(res)
-        if (skipConnect) return;
+      .then(res => {
+        console.log("connected to device resolve: ", res);
         document.getElementById("device-name").innerText = device.name;
         document.getElementById("device-id").innerText = device.id;
 
