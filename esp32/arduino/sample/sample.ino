@@ -4,10 +4,10 @@
 #include <BLE2902.h>
 
 // Device Name: Maximum 30 bytes
-#define DEVICE_NAME "LINE Things Trial ESP32"
+#define DEVICE_NAME "LINE Things Aeon Elf"
 
 // User service UUID: Change this to your generated service UUID
-#define USER_SERVICE_UUID "91E4E176-D0B9-464D-9FE4-52EE3E9F1552"
+#define USER_SERVICE_UUID "E412DB06-BB13-408B-ADED-03462F568159"
 // User service characteristics
 #define WRITE_CHARACTERISTIC_UUID "E9062E71-9E62-4BC6-B0D3-35CDCD9B027B"
 #define NOTIFY_CHARACTERISTIC_UUID "62FBD229-6EDD-4D1A-B554-5C4E1BB29169"
@@ -45,6 +45,7 @@ class serverCallbacks: public BLEServerCallbacks {
 class writeCallback: public BLECharacteristicCallbacks {
   void onWrite(BLECharacteristic *bleWriteCharacteristic) {
     std::string value = bleWriteCharacteristic->getValue();
+    Serial.println("Receive led command");
     if ((char)value[0] <= 1) {
       digitalWrite(LED1, (char)value[0]);
     }
@@ -63,7 +64,7 @@ void setup() {
 
   // Security Settings
   BLESecurity *thingsSecurity = new BLESecurity();
-  thingsSecurity->setAuthenticationMode(ESP_LE_AUTH_BOND);
+  thingsSecurity->setAuthenticationMode(ESP_LE_AUTH_REQ_SC_ONLY);
   thingsSecurity->setCapability(ESP_IO_CAP_NONE);
   thingsSecurity->setInitEncryptionKey(ESP_BLE_ENC_KEY_MASK | ESP_BLE_ID_KEY_MASK);
 
@@ -80,6 +81,7 @@ void loop() {
     btnAction = 0;
     notifyCharacteristic->setValue(&btnValue, 1);
     notifyCharacteristic->notify();
+    Serial.println("Button pressed");
     delay(20);
   }
   // Disconnection
@@ -87,10 +89,12 @@ void loop() {
     delay(500); // Wait for BLE Stack to be ready
     thingsServer->startAdvertising(); // Restart advertising
     oldDeviceConnected = deviceConnected;
+    Serial.println("Disconnection");
   }
   // Connection
   if (deviceConnected && !oldDeviceConnected) {
     oldDeviceConnected = deviceConnected;
+    Serial.println("Connection");
   }
 }
 
